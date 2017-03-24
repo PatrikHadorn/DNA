@@ -37,10 +37,11 @@ private:
         int current_level = 1;
 
         for (size_t i = 0; i < v.size(); ++i) {
-            if (v[i] != nullptr)
+            if (v[i] != nullptr) {
                 ++current_level;
-			else
-				break;
+            } else {
+                break;
+            }
         }
 
         return current_level;
@@ -73,12 +74,12 @@ public:
             std::cout << temp->next[0]->value << " ";
             temp = temp->next[0];
         }
-		std::cout << std::endl;
+        std::cout << std::endl;
     };
 
     node<T>* find( const T& searchValue ) const {
         node<T>* temp = head_node;
-		
+
         for (int i = max_level; i-- > 0;) {
             while (temp->next[i] != nullptr && temp->next[i]->value < searchValue) {
                 temp = temp->next[i];
@@ -86,23 +87,16 @@ public:
         }
 
         temp = temp->next[0];
-		
-		if (temp != nullptr && temp->value == searchValue) {
-			return temp;
-		} else {
-			return nullptr;
-		}
+
+        if (temp != nullptr && temp->value == searchValue) {
+            return temp;
+        } else {
+            return nullptr;
+        }
     }
 
     void insert( const T& newValue ) {
-		node<T>* temp = nullptr;
-        temp = find(newValue);
-
-		if (temp) {
-            temp->value = newValue;
-            return;
-        }
-
+        node<T>* temp = nullptr;
         std::vector<node<T>*> update(head_node->next);
         temp = head_node;
 
@@ -131,27 +125,29 @@ public:
         }
     };
 
-    // It deletes all the elements containing eraseValue, if they exist.
     void erase( const T& eraseValue ) {
-        std::vector<node<T>*> update(head_node->next);
-        node<T>* temp = head_node;
+        while(find(eraseValue)) {
+            std::vector<node<T>*> update(head_node->next);
+            node<T>* temp = head_node;
 
-        for (int i = head_node->levels; i-- > 0;) {
-            while (temp->next[i] != nullptr && temp->next[i]->value < eraseValue) {
-                temp = temp->next[i];
-            }
-            update[i] = temp;
-        }
-        temp = temp->next[0];
-
-        if (temp->value == eraseValue) {
-            for (size_t i = 0; i < update.size(); ++i) {
-                if (update[i]->next[i] != temp) {
-                    break;
+            for (int i = head_node->levels; i-- > 0;) {
+                while (temp->next[i] != nullptr && temp->next[i]->value < eraseValue) {
+                    temp = temp->next[i];
                 }
-                update[i]->next[i] = temp->next[i];
+                update[i] = temp;
             }
-            delete temp;
+
+            temp = temp->next[0];
+
+            if (temp->value == eraseValue) {
+                for (size_t i = 0; i < update.size(); ++i) {
+                    if (update[i]->next[i] != temp) {
+                        break;
+                    }
+                    update[i]->next[i] = temp->next[i];
+                }
+                delete temp;
+            }
         }
     }
 };
@@ -167,8 +163,8 @@ int main() {
     int input;
     std::cin >> input;
     while (input!=0) {
-		s.insert(input);
-		std::cin >> input;
+        s.insert(input);
+        std::cin >> input;
     }
 
     // erase elements
