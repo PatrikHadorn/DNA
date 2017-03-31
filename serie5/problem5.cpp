@@ -23,18 +23,18 @@ It1 findOccurrence(const It1 from, const It1 to, const It2 begin, const It2 end)
     }
 
     if (n >= k) {
-        while (count <= n-k) {
+        while (count <= n - k) {
             // if hashes are eaual check if strings are equal, else move to next subtring
             if (hash_a == hash_b && std::equal(from + count, from + count + k, begin, end)) {
                 return from + count;
-			} else {
-				hash_a = ((C * hash_a) % M + *(from + count + k) % M - (c_to_k * *(from + count)) % M) % M;  
+            } else {
+                hash_a = ((C * hash_a) % M + *(from + count + k) % M - (c_to_k * *(from + count)) % M) % M;
                 ++count;
             }
-		}
-    } 
-	
-	return to;
+        }
+    }
+
+    return to;
 }
 
 int main() {
